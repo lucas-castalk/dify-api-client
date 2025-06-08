@@ -100,3 +100,9 @@ async def send_chat_message_stream():
 # Run the asynchronous function
 asyncio.gather(send_chat_message(), send_chat_message_stream())
 ```
+
+## Development
+- Setup env
+```
+uv sync --extra dev
+```
