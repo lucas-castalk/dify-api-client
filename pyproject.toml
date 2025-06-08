@@ -25,6 +25,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[project.urls]
+Homepage = "https://github.com/lucas-castalk/dify-api-client"
+Source = "https://github.com/lucas-castalk/dify-api-client"
 
 [tool.hatch.version]
 path = "dify_client/__init__.py"
