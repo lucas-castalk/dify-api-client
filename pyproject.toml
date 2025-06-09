@@ -12,8 +12,7 @@ description = "dify-api-client - A package for interacting with the Dify Service
 dependencies = [
     "httpx>=0.28.1",
     "httpx-sse>=0.4.0",
-    "pydantic>=2.10.4",
-    "ruff>=0.11.13",
+    "pydantic>=2.10.4"
 ]
 readme = "README.md"
 license = {file = "LICENSE.md"}
@@ -34,26 +33,16 @@ Source = "https://github.com/lucas-castalk/dify-api-client"
 path = "dify_client/__init__.py"
 
 [project.optional-dependencies]
-adv = [
-]
 dev = [
-    "hatch>=1.14.1",
-    "twine>=6.1.0",
-    "ruff>=0.8.0",
+    "ruff>=0.11.13",
     "pre-commit",
     "pytest",
     "pylint"
 ]
-all = ["dify-api-client[adv,dev]"]
 
 [project.scripts]
 dify-api-client = "dify_client.cli:main"
 
-## General for linter, format
-
-
-
-# Ruff config
 [tool.ruff]
 line-length = 79
 exclude  = ["externals"]
