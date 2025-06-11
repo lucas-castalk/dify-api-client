@@ -46,6 +46,10 @@ ENDPOINT_AUDIO_TO_TEXT = "/audio-to-text"
 
 # conversation
 CONVERSATION_ENDPOINT = "/conversations"
+# datasets
+ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
+    "/datasets/{dataset_id}/document/create-by-text"
+)
 
 
 class DifyClient(BaseModel):
@@ -280,6 +284,33 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.AddChunkToDocumentResponse(**response.json())
+
+    def create_document_by_text(
+        self,
+        dataset_id: str,
+        req: models.CreateDocumentByTextRequest,
+        **kwargs,
+    ) -> models.CreateDocumentByTextResponse:
+        """
+        Creates a new document from text based on an existing knowledge base.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            req: A `CreateDocumentByTextRequest` object containing the document details.
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            A `CreateDocumentByTextResponse` object containing the created document details.
+        """
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_CREATE_DOCUMENT_BY_TEXT, dataset_id=dataset_id
+            ),
+            HTTPMethod.POST,
+            json=req.model_dump(),
+            **kwargs,
+        )
+        return models.CreateDocumentByTextResponse(**response.json())
 
     def _completion_messages(
         self, req: models.CompletionRequest, **kwargs
@@ -841,6 +872,33 @@ class AsyncDifyClient(BaseModel):
             **kwargs,
         )
         return models.ConversationsResponse(**response.json())
+
+    async def acreate_document_by_text(
+        self,
+        dataset_id: str,
+        req: models.CreateDocumentByTextRequest,
+        **kwargs,
+    ) -> models.CreateDocumentByTextResponse:
+        """
+        Creates a new document from text based on an existing knowledge base.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            req: A `CreateDocumentByTextRequest` object containing the document details.
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            A `CreateDocumentByTextResponse` object containing the created document details.
+        """
+        response = await self.arequest(
+            self._prepare_url(
+                ENDPOINT_CREATE_DOCUMENT_BY_TEXT, dataset_id=dataset_id
+            ),
+            HTTPMethod.POST,
+            json=req.model_dump(),
+            **kwargs,
+        )
+        return models.CreateDocumentByTextResponse(**response.json())
 
     def _prepare_url(self, endpoint: str, **kwargs) -> str:
         formatted_endpoint = endpoint.format(**kwargs)

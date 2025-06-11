@@ -1,6 +1,7 @@
+from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Segment(BaseModel):
@@ -38,37 +39,95 @@ class AddChunkToDocumentResponseDataItem(BaseModel):
 
 
 class AddChunkToDocumentResponse(BaseModel):
-    """
-
-    {
-    "data": [{
-        "id": "",
-        "position": 1,
-        "document_id": "",
-        "content": "1",
-        "answer": "1",
-        "word_count": 25,
-        "tokens": 0,
-        "keywords": [
-        "a"
-        ],
-        "index_node_id": "",
-        "index_node_hash": "",
-        "hit_count": 0,
-        "enabled": true,
-        "disabled_at": null,
-        "disabled_by": null,
-        "status": "completed",
-        "created_by": "",
-        "created_at": 1695312007,
-        "indexing_at": 1695312007,
-        "completed_at": 1695312007,
-        "error": null,
-        "stopped_at": null
-    }],
-    "doc_form": "text_model"
-    }
-    """
-
     data: List[AddChunkToDocumentResponseDataItem]
     doc_form: str
+
+
+# Create Document from Text models
+class ProcessRule(BaseModel):
+    mode: str  # "automatic" or "custom"
+    rules: dict = Field(default={})
+    pre_processing_rules: List[dict] = Field(default=[])
+    segmentation: dict = Field(default={})
+    subchunk_segmentation: dict = Field(default={})
+    parent_mode: str = Field(default="full-doc")
+
+
+class SegmentationMode(str, Enum):
+    AUTOMATIC = "automatic"
+    CUSTOM = "custom"
+
+
+class Rule(BaseModel):
+    pre_processing_rules: Optional[List[dict]] = None
+    segmentation: Optional[dict] = None
+    parent_mode: Optional[str] = None
+    subchunk_segmentation: Optional[dict] = None
+
+
+class RetrievalModel(BaseModel):
+    search_method: (
+        str  # "hybrid_search", "semantic_search", "full_text_search"
+    ) = Field(default="hybrid_search")
+    reranking_enable: Optional[bool] = Field(default=False)
+    reranking_mode: str = Field(default="")
+    top_k: int = Field(default=3)
+    score_threshold_enabled: bool = Field(default=False)
+    score_threshold: float = Field(default=0.0)
+
+
+class CreateDocumentByTextRequest(BaseModel):
+    name: str
+    text: str
+    indexing_technique: str  # "high_quality" or "economy"
+    doc_form: Optional[str] = (
+        None  # "text_model", "hierarchical_model", "qa_model"
+    )
+    doc_language: str = Field(default="English")
+    process_rule: ProcessRule
+    retrieval_model: RetrievalModel = Field(default=RetrievalModel())
+    embedding_model: str = Field(default="text-embedding-3-small")
+    embedding_model_provider: str = Field(default="openai")
+
+
+class DataSourceInfo(BaseModel):
+    upload_file_id: str
+
+
+class DocumentData(BaseModel):
+    id: str
+    position: int
+    data_source_type: str
+    data_source_info: DataSourceInfo
+    dataset_process_rule_id: str
+    name: str
+    created_from: str
+    created_by: str
+    created_at: int
+    tokens: int
+    indexing_status: str
+    error: Optional[str]
+    enabled: bool
+    disabled_at: Optional[int]
+    disabled_by: Optional[str]
+    archived: bool
+    display_status: str
+    word_count: int
+    hit_count: int
+    doc_form: str
+
+
+class CreateDocumentByTextResponse(BaseModel):
+    document: DocumentData
+    batch: str
+
+
+class IndexModel(str, Enum):
+    HIGH_QUALITY = "high_quality"
+    ECONOMY = "economy"
+
+
+class DocForm(str, Enum):
+    TEXT_MODEL = "text_model"
+    HIERARCHICAL_MODEL = "hierarchical_model"
+    QA_MODEL = "qa_model"
