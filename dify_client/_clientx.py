@@ -51,6 +51,8 @@ ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
     "/datasets/{dataset_id}/document/create-by-text"
 )
 
+ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
+
 
 class DifyClient(BaseModel):
     api_key: str
@@ -311,6 +313,18 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.CreateDocumentByTextResponse(**response.json())
+
+    def get_documents(
+        self,
+        dataset_id: str,
+        **kwargs,
+    ) -> models.GetDocumentsResponse:
+        response = self.request(
+            self._prepare_url(ENDPOINT_GET_DOCUMENTS, dataset_id=dataset_id),
+            HTTPMethod.GET,
+            **kwargs,
+        )
+        return models.GetDocumentsResponse(**response.json())
 
     def _completion_messages(
         self, req: models.CompletionRequest, **kwargs

@@ -73,5 +73,14 @@ def create_document_by_text():
     print(response)
 
 
+def get_documents():
+    response = client.get_documents(
+        dataset_id="894f6555-f3a6-43a0-9891-579cd64beaa8",
+    )
+    print(response)
+
+
 if __name__ == "__main__":
-    create_document_by_text()
+    # add_chunk_to_document()
+    # create_document_by_text()
+    get_documents()

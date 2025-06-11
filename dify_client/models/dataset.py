@@ -94,23 +94,47 @@ class DataSourceInfo(BaseModel):
     upload_file_id: str
 
 
-class DocumentData(BaseModel):
+class DocumentBaseData(BaseModel):
+    """
+    {
+      "id": "",
+      "position": 1,
+      "data_source_type": "file_upload",
+      "data_source_info": null,
+      "dataset_process_rule_id": null,
+      "name": "dify",
+      "created_from": "",
+      "created_by": "",
+      "created_at": 1681623639,
+      "tokens": 0,
+      "indexing_status": "waiting",
+      "error": null,
+      "enabled": true,
+      "disabled_at": null,
+      "disabled_by": null,
+      "archived": false
+    },
+    """
+
     id: str
     position: int
     data_source_type: str
-    data_source_info: DataSourceInfo
-    dataset_process_rule_id: str
+    data_source_info: Optional[dict] = None
+    dataset_process_rule_id: Optional[str] = None
     name: str
     created_from: str
     created_by: str
     created_at: int
     tokens: int
     indexing_status: str
-    error: Optional[str]
+    error: Optional[str] = None
     enabled: bool
-    disabled_at: Optional[int]
-    disabled_by: Optional[str]
+    disabled_at: Optional[int] = None
+    disabled_by: Optional[str] = None
     archived: bool
+
+
+class DocumentData(DocumentBaseData):
     display_status: str
     word_count: int
     hit_count: int
@@ -120,6 +144,24 @@ class DocumentData(BaseModel):
 class CreateDocumentByTextResponse(BaseModel):
     document: DocumentData
     batch: str
+
+
+class GetDocumentsResponse(BaseModel):
+    """
+    "has_more": false,
+    "limit": 20,
+    "total": 9,
+    "page": 1
+    """
+
+    data: List[DocumentData]
+    has_more: bool
+    limit: int
+    total: int
+    page: int
+
+
+# Enums
 
 
 class IndexModel(str, Enum):
