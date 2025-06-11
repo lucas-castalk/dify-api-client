@@ -264,6 +264,23 @@ class DifyClient(BaseModel):
         )
         return models.ConversationsResponse(**response.json())
 
+    def add_chunk_to_document(
+        self,
+        dataset_id: str,
+        document_id: str,
+        req: models.AddChunkToDocumentRequest,
+        **kwargs,
+    ) -> models.AddChunkToDocumentResponse:
+        response = self.request(
+            self._prepare_url(
+                f"/datasets/{dataset_id}/documents/{document_id}/segments"
+            ),
+            HTTPMethod.POST,
+            json=req.model_dump(),
+            **kwargs,
+        )
+        return models.AddChunkToDocumentResponse(**response.json())
+
     def _completion_messages(
         self, req: models.CompletionRequest, **kwargs
     ) -> models.CompletionResponse:
