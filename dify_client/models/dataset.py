@@ -161,6 +161,35 @@ class GetDocumentsResponse(BaseModel):
     page: int
 
 
+# Metadata
+class DocumentMetadataBase(BaseModel):
+    id: str
+    name: str
+
+
+class DocumentMetadataUpdate(DocumentMetadataBase):
+    value: str
+
+
+class DocumentMetadataGet(DocumentMetadataBase):
+    type: str
+    count: int
+
+
+class DocumentMetadataOperationData(BaseModel):
+    document_id: str
+    metadata_list: List[DocumentMetadataUpdate]
+
+
+class UpdateDocumentMetadataRequest(BaseModel):
+    operation_data: List[DocumentMetadataOperationData]
+
+
+class GetMetadataListResponse(BaseModel):
+    doc_metadata: List[DocumentMetadataGet]
+    built_in_field_enabled: bool
+
+
 # Enums
 
 

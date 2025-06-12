@@ -80,7 +80,37 @@ def get_documents():
     print(response)
 
 
+def get_metadata_list():
+    response = client.get_metadata_list(
+        dataset_id="894f6555-f3a6-43a0-9891-579cd64beaa8",
+    )
+    print(response)
+
+
+def update_document_metadata():
+    response = client.update_document_metadata(
+        dataset_id="894f6555-f3a6-43a0-9891-579cd64beaa8",
+        req=models.UpdateDocumentMetadataRequest(
+            operation_data=[
+                models.DocumentMetadataOperationData(
+                    document_id="ab737df7-619c-4859-96db-4e3254455b62",
+                    metadata_list=[
+                        models.DocumentMetadataUpdate(
+                            id="8f6e86d4-0cbb-4ad8-8e79-e7c0ac188cce",
+                            name="language_code",
+                            value="en",
+                        ),
+                    ],
+                ),
+            ]
+        ),
+    )
+    print(response)
+
+
 if __name__ == "__main__":
     # add_chunk_to_document()
     # create_document_by_text()
-    get_documents()
+    # get_documents()
+    # get_metadata_list()
+    update_document_metadata()

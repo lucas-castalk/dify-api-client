@@ -52,6 +52,8 @@ ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
 )
 
 ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
+ENDPOINT_UPDATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/documents/metadata"
+ENDPOINT_GET_METADATA_LIST = "/datasets/{dataset_id}/metadata"
 
 
 class DifyClient(BaseModel):
@@ -325,6 +327,77 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.GetDocumentsResponse(**response.json())
+
+    def get_metadata_list(
+        self,
+        dataset_id: str,
+        **kwargs,
+    ) -> models.GetMetadataListResponse:
+        """
+        GET
+/datasets/{dataset_id}/metadata
+Get Knowledge Metadata List
+Params
+Name
+dataset_id
+Type
+string
+Description
+Knowledge ID
+
+Request
+GET
+/datasets/{dataset_id}/metadata
+curl --location --request GET 'http://uat-dify-llm.torilab.ai/v1/datasets/{dataset_id}/metadata' \
+--header 'Authorization: Bearer {api_key}'
+
+Copy
+Copied!
+Response
+{
+  "doc_metadata": [
+    {
+      "id": "",
+      "name": "name",
+      "type": "string",
+      "use_count": 0,
+    },
+    ...
+  ],
+  "built_in_field_enabled": true
+}
+
+Copy
+Copied!
+
+        """
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_GET_METADATA_LIST, dataset_id=dataset_id
+            ),
+            HTTPMethod.GET,
+            **kwargs,
+        )
+        print(response.json())
+        return models.GetMetadataListResponse(**response.json())
+
+    def update_document_metadata(
+        self,
+        dataset_id: str,
+        req: models.UpdateDocumentMetadataRequest,
+        **kwargs,
+    ) -> dict:
+        print(req.model_dump())
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_UPDATE_DOCUMENT_METADATA,
+                dataset_id=dataset_id,
+            ),
+            HTTPMethod.POST,
+            json=req.model_dump(),
+            **kwargs,
+        )
+        return response.json()
 
     def _completion_messages(
         self, req: models.CompletionRequest, **kwargs
