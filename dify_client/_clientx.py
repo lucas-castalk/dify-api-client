@@ -20,9 +20,6 @@ class HTTPMethod(str, Enum):
     DELETE = "DELETE"
 
 
-_httpx_client = httpx.Client()
-_async_httpx_client = httpx.AsyncClient()
-
 IGNORED_STREAM_EVENTS = (models.StreamEvent.PING.value,)
 
 # feedback
@@ -60,6 +57,14 @@ class DifyClient(BaseModel):
     api_key: str
     api_base: Optional[str] = "https://api.dify.ai/v1"
     api_version: Optional[str] = "v1"
+    verify_ssl: Optional[bool] = True
+    follow_redirects: Optional[bool] = False
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self._httpx_client = httpx.Client(
+            verify=self.verify_ssl, follow_redirects=self.follow_redirects
+        )
 
     def request(
         self,
@@ -99,7 +104,7 @@ class DifyClient(BaseModel):
             merged_headers.update(headers)
         self._prepare_auth_headers(merged_headers)
 
-        response = _httpx_client.request(
+        response = self._httpx_client.request(
             method,
             endpoint,
             content=content,
@@ -151,7 +156,7 @@ class DifyClient(BaseModel):
         self._prepare_auth_headers(merged_headers)
 
         with connect_sse(
-            _httpx_client,
+            self._httpx_client,
             method,
             endpoint,
             headers=merged_headers,
@@ -333,44 +338,6 @@ class DifyClient(BaseModel):
         dataset_id: str,
         **kwargs,
     ) -> models.GetMetadataListResponse:
-        """
-        GET
-/datasets/{dataset_id}/metadata
-Get Knowledge Metadata List
-Params
-Name
-dataset_id
-Type
-string
-Description
-Knowledge ID
-
-Request
-GET
-/datasets/{dataset_id}/metadata
-curl --location --request GET 'http://uat-dify-llm.torilab.ai/v1/datasets/{dataset_id}/metadata' \
---header 'Authorization: Bearer {api_key}'
-
-Copy
-Copied!
-Response
-{
-  "doc_metadata": [
-    {
-      "id": "",
-      "name": "name",
-      "type": "string",
-      "use_count": 0,
-    },
-    ...
-  ],
-  "built_in_field_enabled": true
-}
-
-Copy
-Copied!
-
-        """
         response = self.request(
             self._prepare_url(
                 ENDPOINT_GET_METADATA_LIST, dataset_id=dataset_id
@@ -586,6 +553,14 @@ class AsyncDifyClient(BaseModel):
     api_key: str
     api_base: Optional[str] = "https://api.dify.ai/v1"
     api_version: Optional[str] = "v1"
+    verify_ssl: Optional[bool] = True
+    follow_redirects: Optional[bool] = False
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self._async_httpx_client = httpx.AsyncClient(
+            verify=self.verify_ssl, follow_redirects=self.follow_redirects
+        )
 
     async def arequest(
         self,
@@ -624,7 +599,7 @@ class AsyncDifyClient(BaseModel):
             merged_headers.update(headers)
         self._prepare_auth_headers(merged_headers)
 
-        response = await _async_httpx_client.request(
+        response = await self._async_httpx_client.request(
             method,
             endpoint,
             content=content,
@@ -676,7 +651,7 @@ class AsyncDifyClient(BaseModel):
         self._prepare_auth_headers(merged_headers)
 
         async with aconnect_sse(
-            _async_httpx_client,
+            self._async_httpx_client,
             method,
             endpoint,
             headers=merged_headers,

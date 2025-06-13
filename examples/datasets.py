@@ -13,7 +13,12 @@ DIFY_API_BASE = os.getenv("DIFY_API_BASE")
 DIFY_API_KEY = os.getenv("DIFY_API_KEY")
 
 
-client = DifyClient(api_key=DIFY_API_KEY, api_base=DIFY_API_BASE)
+client = DifyClient(
+    api_key=DIFY_API_KEY,
+    api_base=DIFY_API_BASE,
+    verify_ssl=False,
+    follow_redirects=True,
+)
 
 
 def add_chunk_to_document():
