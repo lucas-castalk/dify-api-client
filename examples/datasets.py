@@ -113,9 +113,21 @@ def update_document_metadata():
     print(response)
 
 
+def create_document_metadata():
+    response = client.create_document_metadata(
+        dataset_id="565c440e-eaf8-49bf-8d98-003d8eb9ddba",
+        req=models.CreateDocumentMetadataRequest(
+            name="language_code",
+            type="string",
+        ),
+    )
+    print(response)
+
+
 if __name__ == "__main__":
     # add_chunk_to_document()
     # create_document_by_text()
     # get_documents()
     # get_metadata_list()
-    update_document_metadata()
+    # update_document_metadata()
+    create_document_metadata()

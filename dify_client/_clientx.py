@@ -51,6 +51,7 @@ ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
 ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
 ENDPOINT_UPDATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/documents/metadata"
 ENDPOINT_GET_METADATA_LIST = "/datasets/{dataset_id}/metadata"
+ENDPOINT_CREATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/metadata"
 
 
 class DifyClient(BaseModel):
@@ -365,6 +366,23 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return response.json()
+
+    def create_document_metadata(
+        self,
+        dataset_id: str,
+        req: models.CreateDocumentMetadataRequest,
+        **kwargs,
+    ) -> models.CreateDocumentMetadataResponse:
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_CREATE_DOCUMENT_METADATA,
+                dataset_id=dataset_id,
+            ),
+            HTTPMethod.POST,
+            json=req.model_dump(),
+            **kwargs,
+        )
+        return models.CreateDocumentMetadataResponse(**response.json())
 
     def _completion_messages(
         self, req: models.CompletionRequest, **kwargs

@@ -190,9 +190,22 @@ class GetMetadataListResponse(BaseModel):
     built_in_field_enabled: bool
 
 
+class CreateDocumentMetadataRequest(BaseModel):
+    """
+    type: string / number / time
+    """
+
+    type: str
+    name: str
+
+
+class CreateDocumentMetadataResponse(BaseModel):
+    id: str
+    type: str
+    name: str
+
+
 # Enums
-
-
 class IndexModel(str, Enum):
     HIGH_QUALITY = "high_quality"
     ECONOMY = "economy"
