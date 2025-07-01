@@ -1,4 +1,5 @@
 from enum import Enum
+from pathlib import Path
 from typing import Any, AsyncIterator, Dict, Iterator, Mapping, Optional, Union
 from urllib.parse import urljoin
 
@@ -46,6 +47,9 @@ CONVERSATION_ENDPOINT = "/conversations"
 # datasets
 ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
     "/datasets/{dataset_id}/document/create-by-text"
+)
+ENDPOINT_CREATE_DOCUMENT_BY_FILE = (
+    "/datasets/{dataset_id}/document/create-by-file"
 )
 
 ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
@@ -321,6 +325,47 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.CreateDocumentByTextResponse(**response.json())
+
+    def create_document_by_file(
+        self,
+        dataset_id: str,
+        file: str | types.FileTypes,
+        req: models.CreateDocumentByFileRequest,
+        **kwargs,
+    ) -> models.CreateDocumentByFileResponse:
+        """
+        Creates a new document from a file based on an existing knowledge base.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            file: The file to upload (file path, file-like object, or tuple for httpx).
+            req: A CreateDocumentByFileRequest object containing the document config.
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            A CreateDocumentByFileResponse object containing the created document details.
+        """
+        if isinstance(file, str):
+            filename = Path(file).name
+            file = (
+                filename,
+                open(file, "rb"),
+                "application/octet-stream",
+            )
+
+        files = [
+            ("data", (None, req.model_dump_json(), "text/plain")),
+            ("file", file),
+        ]
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_CREATE_DOCUMENT_BY_FILE, dataset_id=dataset_id
+            ),
+            HTTPMethod.POST,
+            files=files,
+            **kwargs,
+        )
+        return models.CreateDocumentByFileResponse(**response.json())
 
     def get_documents(
         self,

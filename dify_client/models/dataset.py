@@ -4,6 +4,18 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
+# Enums
+class IndexModel(str, Enum):
+    HIGH_QUALITY = "high_quality"
+    ECONOMY = "economy"
+
+
+class DocForm(str, Enum):
+    TEXT_MODEL = "text_model"
+    HIERARCHICAL_MODEL = "hierarchical_model"
+    QA_MODEL = "qa_model"
+
+
 class Segment(BaseModel):
     content: str
     answer: Optional[str] = None
@@ -76,9 +88,11 @@ class RetrievalModel(BaseModel):
     score_threshold: float = Field(default=0.0)
 
 
-class CreateDocumentByTextRequest(BaseModel):
-    name: str
-    text: str
+class BaseCreateDocumentRequest(BaseModel):
+    """
+    Represents the base configuration for creating a document.
+    """
+
     indexing_technique: str  # "high_quality" or "economy"
     doc_form: Optional[str] = (
         None  # "text_model", "hierarchical_model", "qa_model"
@@ -88,6 +102,11 @@ class CreateDocumentByTextRequest(BaseModel):
     retrieval_model: RetrievalModel = Field(default=RetrievalModel())
     embedding_model: str = Field(default="text-embedding-3-small")
     embedding_model_provider: str = Field(default="openai")
+
+
+class CreateDocumentByTextRequest(BaseCreateDocumentRequest):
+    name: str
+    text: str
 
 
 class DataSourceInfo(BaseModel):
@@ -205,13 +224,13 @@ class CreateDocumentMetadataResponse(BaseModel):
     name: str
 
 
-# Enums
-class IndexModel(str, Enum):
-    HIGH_QUALITY = "high_quality"
-    ECONOMY = "economy"
+class CreateDocumentByFileRequest(BaseCreateDocumentRequest):
+    """
+    Represents the configuration for creating a document by file upload. This will be serialized to JSON and sent as the 'data' field in multipart/form-data.
+    """
+
+    original_document_id: Optional[str] = None
 
 
-class DocForm(str, Enum):
-    TEXT_MODEL = "text_model"
-    HIERARCHICAL_MODEL = "hierarchical_model"
-    QA_MODEL = "qa_model"
+class CreateDocumentByFileResponse(CreateDocumentByTextResponse):
+    pass
