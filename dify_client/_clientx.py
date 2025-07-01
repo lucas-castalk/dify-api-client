@@ -391,7 +391,6 @@ class DifyClient(BaseModel):
             HTTPMethod.GET,
             **kwargs,
         )
-        print(response.json())
         return models.GetMetadataListResponse(**response.json())
 
     def update_document_metadata(
@@ -400,7 +399,6 @@ class DifyClient(BaseModel):
         req: models.UpdateDocumentMetadataRequest,
         **kwargs,
     ) -> dict:
-        print(req.model_dump())
         response = self.request(
             self._prepare_url(
                 ENDPOINT_UPDATE_DOCUMENT_METADATA,
