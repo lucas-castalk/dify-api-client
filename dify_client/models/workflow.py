@@ -22,7 +22,7 @@ class ExecutionMetadata(BaseModel):
 class WorkflowStartedData(BaseModel):
     id: str  # workflow run id
     workflow_id: str  # workflow id
-    sequence_number: int
+    sequence_number: Optional[int] = None
     inputs: Optional[dict] = None
     created_at: int  # unix timestamp seconds
 
