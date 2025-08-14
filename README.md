@@ -106,3 +106,7 @@ asyncio.gather(send_chat_message(), send_chat_message_stream())
 ```
 uv sync --extra dev
 ```
+- Export python path to run dev
+```
+export PYTHONPATH=.
+```
