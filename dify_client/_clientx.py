@@ -44,6 +44,7 @@ ENDPOINT_AUDIO_TO_TEXT = "/audio-to-text"
 
 # conversation
 CONVERSATION_ENDPOINT = "/conversations"
+MESSAGES_ENDPOINT = "/messages"
 # datasets
 ENDPOINT_CREATE_DOCUMENT_BY_TEXT = (
     "/datasets/{dataset_id}/document/create-by-text"
@@ -281,6 +282,17 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.ConversationsResponse(**response.json())
+
+    def get_conversation_history_messages(
+        self, req: models.ConversationHistoryMessageRequest, **kwargs
+    ) -> models.ConversationHistoryMessageResponse:
+        response = self.request(
+            self._prepare_url(MESSAGES_ENDPOINT),
+            HTTPMethod.GET,
+            params=req.model_dump(),
+            **kwargs,
+        )
+        return models.ConversationHistoryMessageResponse(**response.json())
 
     def add_chunk_to_document(
         self,
