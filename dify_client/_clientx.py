@@ -1035,6 +1035,17 @@ class AsyncDifyClient(BaseModel):
         )
         return models.CreateDocumentByTextResponse(**response.json())
 
+    async def aget_conversation_history_messages(
+        self, req: models.ConversationHistoryMessageRequest, **kwargs
+    ) -> models.ConversationHistoryMessageResponse:
+        response = await self.arequest(
+            self._prepare_url(MESSAGES_ENDPOINT),
+            HTTPMethod.GET,
+            params=req.model_dump(),
+            **kwargs,
+        )
+        return models.ConversationHistoryMessageResponse(**response.json())
+
     def _prepare_url(self, endpoint: str, **kwargs) -> str:
         formatted_endpoint = endpoint.format(**kwargs)
         if contains_versioned_url(self.api_base):
