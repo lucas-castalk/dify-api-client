@@ -1008,6 +1008,17 @@ class AsyncDifyClient(BaseModel):
         )
         return models.ConversationsResponse(**response.json())
 
+    async def aget_conversation_history_messages(
+        self, req: models.ConversationHistoryMessageRequest, **kwargs
+    ) -> models.ConversationHistoryMessageResponse:
+        response = await self.arequest(
+            self._prepare_url(MESSAGES_ENDPOINT),
+            HTTPMethod.GET,
+            params=req.model_dump(),
+            **kwargs,
+        )
+        return models.ConversationHistoryMessageResponse(**response.json())
+
     async def acreate_document_by_text(
         self,
         dataset_id: str,
