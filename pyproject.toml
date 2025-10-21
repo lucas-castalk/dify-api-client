@@ -88,10 +88,10 @@ known-first-party = []
 [tool.pytest.ini_options]
 log_cli = 1
 log_cli_level = "WARNING"
-#testpaths = ["tests"]
-#python_files = ["test_*.py", "*_test.py"]
-#python_classes = ["Test*"]
-#python_functions = ["test_*"]
+testpaths = ["dify_client/tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
 
 
 [tool.coverage.run]

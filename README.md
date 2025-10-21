@@ -1,5 +1,9 @@
 # dify-api-client
 
+[![CI](https://github.com/lucas-castalk/dify-api-client/actions/workflows/ci.yml/badge.svg)](https://github.com/lucas-castalk/dify-api-client/actions/workflows/ci.yml)
+[![PyPI version](https://badge.fury.io/py/dify-api-client.svg)](https://badge.fury.io/py/dify-api-client)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+
 This package is a fork of [`dify-client-python`](https://github.com/haoyuhu/dify-client-python) with custom modifications
 
 It provides a convenient and powerful interface to interact with the Dify API, supporting both synchronous and asynchronous operations.
