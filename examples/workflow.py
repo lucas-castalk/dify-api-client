@@ -57,9 +57,9 @@ You are a professional recruiter communication assistant. Your goal is to take a
 """
 
 QUERY = """
-Hi John,  
-We are looking for a Backend Engineer with Python. The job is in Singapore.  
-If interested, please send CV. 
+Hi John,
+We are looking for a Backend Engineer with Python. The job is in Singapore.
+If interested, please send CV.
 """
 
 

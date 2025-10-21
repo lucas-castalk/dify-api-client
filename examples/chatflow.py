@@ -4,6 +4,7 @@ import uuid
 
 from dify_client import AsyncDifyClient, models
 
+
 # Initialize the async client with your API key
 async_client = AsyncDifyClient(
     api_key=os.getenv("DIFY_API_KEY"),

@@ -6,6 +6,7 @@ import dotenv
 
 from dify_client import DifyClient, models
 
+
 dotenv.load_dotenv()
 
 DIFY_API_BASE = os.getenv("DIFY_API_BASE")
