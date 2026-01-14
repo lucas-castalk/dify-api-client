@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.16] - 2025-01-XX
+- Add support for getting segments/chunks from documents (`get_segments`, `aget_segments`)
+- Add support for updating segments/chunks in documents (`update_segment`, `aupdate_segment`)
+- Refactor examples/datasets.py to use CLI with --mode argument instead of commenting/uncommenting code
+- Fix UpdateSegmentResponse model to match API response structure
+
 ## [0.0.15] - 2025-10-21
 - Support Converstaion History message Async
 

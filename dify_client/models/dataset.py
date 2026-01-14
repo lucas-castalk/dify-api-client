@@ -55,6 +55,36 @@ class AddChunkToDocumentResponse(BaseModel):
     doc_form: str
 
 
+# Get Segments from Document models
+class GetSegmentsRequest(BaseModel):
+    keyword: Optional[str] = None
+    status: Optional[str] = None  # e.g., "completed"
+    page: Optional[int] = None
+    limit: Optional[int] = Field(default=20, ge=1, le=100)
+
+
+class GetSegmentsResponse(BaseModel):
+    data: List[AddChunkToDocumentResponseDataItem]
+    has_more: bool
+    limit: int
+    total: int
+    page: int
+
+
+# Update Segment models
+class UpdateSegmentRequest(BaseModel):
+    content: str  # Required
+    answer: Optional[str] = None
+    keywords: Optional[List[str]] = None
+    enabled: Optional[bool] = None
+    regenerate_child_chunks: Optional[bool] = None
+
+
+class UpdateSegmentResponse(BaseModel):
+    data: AddChunkToDocumentResponseDataItem
+    doc_form: str
+
+
 # Create Document from Text models
 class ProcessRule(BaseModel):
     mode: str  # "automatic" or "custom"

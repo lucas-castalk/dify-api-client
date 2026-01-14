@@ -57,6 +57,12 @@ ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
 ENDPOINT_UPDATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/documents/metadata"
 ENDPOINT_GET_METADATA_LIST = "/datasets/{dataset_id}/metadata"
 ENDPOINT_CREATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/metadata"
+ENDPOINT_GET_SEGMENTS = (
+    "/datasets/{dataset_id}/documents/{document_id}/segments"
+)
+ENDPOINT_UPDATE_SEGMENT = (
+    "/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}"
+)
 
 
 class DifyClient(BaseModel):
@@ -310,6 +316,74 @@ class DifyClient(BaseModel):
             **kwargs,
         )
         return models.AddChunkToDocumentResponse(**response.json())
+
+    def get_segments(
+        self,
+        dataset_id: str,
+        document_id: str,
+        req: Optional[models.GetSegmentsRequest] = None,
+        **kwargs,
+    ) -> models.GetSegmentsResponse:
+        """
+        Retrieves chunks/segments from a document.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            document_id: The identifier of the document.
+            req: A `GetSegmentsRequest` object containing optional query parameters
+                (keyword, status, page, limit).
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            A `GetSegmentsResponse` object containing the list of segments/chunks.
+        """
+        params = req.model_dump(exclude_none=True) if req else {}
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_GET_SEGMENTS,
+                dataset_id=dataset_id,
+                document_id=document_id,
+            ),
+            HTTPMethod.GET,
+            params=params,
+            **kwargs,
+        )
+        return models.GetSegmentsResponse(**response.json())
+
+    def update_segment(
+        self,
+        dataset_id: str,
+        document_id: str,
+        segment_id: str,
+        req: models.UpdateSegmentRequest,
+        **kwargs,
+    ) -> models.UpdateSegmentResponse:
+        """
+        Updates a chunk/segment in a document.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            document_id: The identifier of the document.
+            segment_id: The identifier of the segment/chunk to update.
+            req: An `UpdateSegmentRequest` object containing the segment details
+                (content is required, answer, keywords, enabled, regenerate_child_chunks are optional).
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            An `UpdateSegmentResponse` object containing the updated segment details.
+        """
+        response = self.request(
+            self._prepare_url(
+                ENDPOINT_UPDATE_SEGMENT,
+                dataset_id=dataset_id,
+                document_id=document_id,
+                segment_id=segment_id,
+            ),
+            HTTPMethod.POST,
+            json={"segment": req.model_dump(exclude_none=True)},
+            **kwargs,
+        )
+        return models.UpdateSegmentResponse(**response.json())
 
     def create_document_by_text(
         self,
@@ -1045,6 +1119,74 @@ class AsyncDifyClient(BaseModel):
             **kwargs,
         )
         return models.ConversationHistoryMessageResponse(**response.json())
+
+    async def aget_segments(
+        self,
+        dataset_id: str,
+        document_id: str,
+        req: Optional[models.GetSegmentsRequest] = None,
+        **kwargs,
+    ) -> models.GetSegmentsResponse:
+        """
+        Retrieves chunks/segments from a document.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            document_id: The identifier of the document.
+            req: A `GetSegmentsRequest` object containing optional query parameters
+                (keyword, status, page, limit).
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            A `GetSegmentsResponse` object containing the list of segments/chunks.
+        """
+        params = req.model_dump(exclude_none=True) if req else {}
+        response = await self.arequest(
+            self._prepare_url(
+                ENDPOINT_GET_SEGMENTS,
+                dataset_id=dataset_id,
+                document_id=document_id,
+            ),
+            HTTPMethod.GET,
+            params=params,
+            **kwargs,
+        )
+        return models.GetSegmentsResponse(**response.json())
+
+    async def aupdate_segment(
+        self,
+        dataset_id: str,
+        document_id: str,
+        segment_id: str,
+        req: models.UpdateSegmentRequest,
+        **kwargs,
+    ) -> models.UpdateSegmentResponse:
+        """
+        Updates a chunk/segment in a document.
+
+        Args:
+            dataset_id: The identifier of the knowledge base/dataset.
+            document_id: The identifier of the document.
+            segment_id: The identifier of the segment/chunk to update.
+            req: An `UpdateSegmentRequest` object containing the segment details
+                (content is required, answer, keywords, enabled, regenerate_child_chunks are optional).
+            **kwargs: Extra keyword arguments to pass to the request function.
+
+        Returns:
+            An `UpdateSegmentResponse` object containing the updated segment details.
+        """
+        response = await self.arequest(
+            self._prepare_url(
+                ENDPOINT_UPDATE_SEGMENT,
+                dataset_id=dataset_id,
+                document_id=document_id,
+                segment_id=segment_id,
+            ),
+            HTTPMethod.POST,
+            json={"segment": req.model_dump(exclude_none=True)},
+            **kwargs,
+        )
+        return models.UpdateSegmentResponse(**response.json())
 
     def _prepare_url(self, endpoint: str, **kwargs) -> str:
         formatted_endpoint = endpoint.format(**kwargs)
