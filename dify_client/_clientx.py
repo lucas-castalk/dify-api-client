@@ -4,6 +4,7 @@ from typing import Any, AsyncIterator, Dict, Iterator, Mapping, Optional, Union
 from urllib.parse import urljoin
 
 import httpx
+
 # noinspection PyProtectedMember
 import httpx._types as types
 from httpx_sse import ServerSentEvent, aconnect_sse, connect_sse
