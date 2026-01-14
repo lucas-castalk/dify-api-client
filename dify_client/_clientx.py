@@ -57,8 +57,12 @@ ENDPOINT_GET_DOCUMENTS = "/datasets/{dataset_id}/documents"
 ENDPOINT_UPDATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/documents/metadata"
 ENDPOINT_GET_METADATA_LIST = "/datasets/{dataset_id}/metadata"
 ENDPOINT_CREATE_DOCUMENT_METADATA = "/datasets/{dataset_id}/metadata"
-ENDPOINT_GET_SEGMENTS = "/datasets/{dataset_id}/documents/{document_id}/segments"
-ENDPOINT_UPDATE_SEGMENT = "/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}"
+ENDPOINT_GET_SEGMENTS = (
+    "/datasets/{dataset_id}/documents/{document_id}/segments"
+)
+ENDPOINT_UPDATE_SEGMENT = (
+    "/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}"
+)
 
 
 class DifyClient(BaseModel):
@@ -1115,6 +1119,7 @@ class AsyncDifyClient(BaseModel):
             **kwargs,
         )
         return models.ConversationHistoryMessageResponse(**response.json())
+
     async def aget_segments(
         self,
         dataset_id: str,
