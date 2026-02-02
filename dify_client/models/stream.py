@@ -33,6 +33,7 @@ class StreamEvent(str, Enum):
     PARALLEL_BRANCH_STARTED = "parallel_branch_started"
     PARALLEL_BRANCH_FINISHED = "parallel_branch_finished"
     AGENT_LOG = "agent_log"
+    NODE_RETRY = "node_retry"
 
     @classmethod
     def new(cls, event: Union["StreamEvent", str]) -> "StreamEvent":
