@@ -32,8 +32,8 @@ class AddChunkToDocumentResponseDataItem(BaseModel):
     document_id: str
     content: str
     answer: Optional[str] = None
-    word_count: int
-    tokens: int
+    word_count: Optional[int] = None
+    tokens: Optional[int] = None
     keywords: List[str]
     index_node_id: str
     index_node_hash: str
@@ -174,7 +174,7 @@ class DocumentBaseData(BaseModel):
     created_from: str
     created_by: str
     created_at: int
-    tokens: int
+    tokens: Optional[int] = None
     indexing_status: str
     error: Optional[str] = None
     enabled: bool
@@ -185,7 +185,7 @@ class DocumentBaseData(BaseModel):
 
 class DocumentData(DocumentBaseData):
     display_status: str
-    word_count: int
+    word_count: Optional[int] = None
     hit_count: int
     doc_form: str
 
