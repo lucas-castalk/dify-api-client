@@ -208,7 +208,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_FEEDBACKS, message_id=message_id),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.FeedbackResponse(**response.json())
@@ -230,7 +230,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_SUGGESTED, message_id=message_id),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ChatSuggestResponse(**response.json())
@@ -253,7 +253,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_FILES_UPLOAD),
             HTTPMethod.POST,
-            data=req.model_dump(),
+            data=req.model_dump(exclude_none=True),
             files=[("file", file)],
             **kwargs,
         )
@@ -284,7 +284,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(CONVERSATION_ENDPOINT),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ConversationsResponse(**response.json())
@@ -295,7 +295,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(MESSAGES_ENDPOINT),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ConversationHistoryMessageResponse(**response.json())
@@ -312,7 +312,7 @@ class DifyClient(BaseModel):
                 f"/datasets/{dataset_id}/documents/{document_id}/segments"
             ),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.AddChunkToDocumentResponse(**response.json())
@@ -407,7 +407,7 @@ class DifyClient(BaseModel):
                 ENDPOINT_CREATE_DOCUMENT_BY_TEXT, dataset_id=dataset_id
             ),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.CreateDocumentByTextResponse(**response.json())
@@ -491,7 +491,7 @@ class DifyClient(BaseModel):
                 dataset_id=dataset_id,
             ),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return response.json()
@@ -508,7 +508,7 @@ class DifyClient(BaseModel):
                 dataset_id=dataset_id,
             ),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.CreateDocumentMetadataResponse(**response.json())
@@ -519,7 +519,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_COMPLETION_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.CompletionResponse(**response.json())
@@ -530,7 +530,7 @@ class DifyClient(BaseModel):
         event_source = self.request_stream(
             self._prepare_url(ENDPOINT_COMPLETION_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         for sse in event_source:
@@ -576,7 +576,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_CHAT_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ChatResponse(**response.json())
@@ -587,7 +587,7 @@ class DifyClient(BaseModel):
         event_source = self.request_stream(
             self._prepare_url(ENDPOINT_CHAT_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         for sse in event_source:
@@ -635,7 +635,7 @@ class DifyClient(BaseModel):
         response = self.request(
             self._prepare_url(ENDPOINT_RUN_WORKFLOWS),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.WorkflowsRunResponse(**response.json())
@@ -646,7 +646,7 @@ class DifyClient(BaseModel):
         event_source = self.request_stream(
             self._prepare_url(ENDPOINT_RUN_WORKFLOWS),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         for sse in event_source:
@@ -673,7 +673,7 @@ class DifyClient(BaseModel):
         response = self.request(
             endpoint,
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.StopResponse(**response.json())
@@ -838,7 +838,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_FEEDBACKS, message_id=message_id),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.FeedbackResponse(**response.json())
@@ -860,7 +860,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_SUGGESTED, message_id=message_id),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ChatSuggestResponse(**response.json())
@@ -883,7 +883,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_FILES_UPLOAD),
             HTTPMethod.POST,
-            data=req.model_dump(),
+            data=req.model_dump(exclude_none=True),
             files=[("file", file)],
             **kwargs,
         )
@@ -915,7 +915,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_COMPLETION_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.CompletionResponse(**response.json())
@@ -926,7 +926,7 @@ class AsyncDifyClient(BaseModel):
         async for sse in self.arequest_stream(
             self._prepare_url(ENDPOINT_COMPLETION_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         ):
             yield models.build_completion_stream_response(sse.json())
@@ -971,7 +971,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_CHAT_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ChatResponse(**response.json())
@@ -982,7 +982,7 @@ class AsyncDifyClient(BaseModel):
         async for sse in self.arequest_stream(
             self._prepare_url(ENDPOINT_CHAT_MESSAGES),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         ):
             yield models.build_chat_stream_response(sse.json())
@@ -1029,7 +1029,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(ENDPOINT_RUN_WORKFLOWS),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.WorkflowsRunResponse(**response.json())
@@ -1040,7 +1040,7 @@ class AsyncDifyClient(BaseModel):
         async for sse in self.arequest_stream(
             self._prepare_url(ENDPOINT_RUN_WORKFLOWS),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         ):
             yield models.build_workflows_stream_response(sse.json())
@@ -1066,7 +1066,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             endpoint,
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.StopResponse(**response.json())
@@ -1077,7 +1077,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(CONVERSATION_ENDPOINT),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ConversationsResponse(**response.json())
@@ -1104,7 +1104,7 @@ class AsyncDifyClient(BaseModel):
                 ENDPOINT_CREATE_DOCUMENT_BY_TEXT, dataset_id=dataset_id
             ),
             HTTPMethod.POST,
-            json=req.model_dump(),
+            json=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.CreateDocumentByTextResponse(**response.json())
@@ -1115,7 +1115,7 @@ class AsyncDifyClient(BaseModel):
         response = await self.arequest(
             self._prepare_url(MESSAGES_ENDPOINT),
             HTTPMethod.GET,
-            params=req.model_dump(),
+            params=req.model_dump(exclude_none=True),
             **kwargs,
         )
         return models.ConversationHistoryMessageResponse(**response.json())
