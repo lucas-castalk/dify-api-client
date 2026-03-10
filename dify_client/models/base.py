@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 class Mode(str, Enum):
     CHAT = "chat"
     COMPLETION = "completion"
-    ADAVANCED_CHAT = "advanced-chat"
+    ADVANCED_CHAT = "advanced-chat"
 
 
 class ResponseMode(str, Enum):
@@ -18,11 +18,17 @@ class ResponseMode(str, Enum):
 
 class FileType(str, Enum):
     IMAGE = "image"
+    DOCUMENT = "document"
+    AUDIO = "audio"
+    VIDEO = "video"
+    CUSTOM = "custom"
 
 
 class TransferMethod(str, Enum):
     REMOTE_URL = "remote_url"
     LOCAL_FILE = "local_file"
+    TOOL_FILE = "tool_file"
+    DATASOURCE_FILE = "datasource_file"
 
 
 # Allows the entry of various variable values defined by the App.
